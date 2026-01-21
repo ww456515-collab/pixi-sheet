@@ -16,4 +16,7 @@ export const CONFIG = {
   // Custom cursors (SVG Data URIs)
   CURSOR_DOWN: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath fill='black' stroke='white' stroke-width='2' d='M16 26 L6 14 H12 V4 H20 V14 H26 Z'/%3E%3C/svg%3E\") 16 16, auto",
   CURSOR_RIGHT: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath fill='black' stroke='white' stroke-width='2' d='M26 16 L14 6 V12 H4 V20 H14 V26 Z'/%3E%3C/svg%3E\") 16 16, auto",
+  
+  // Options
+  DEFAULT_SELECTION_ENABLED: true, // Whether to select the first cell on startup
 };

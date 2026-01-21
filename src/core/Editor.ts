@@ -11,6 +11,10 @@ export class Editor {
   private activeCell: { col: number, row: number } | null = null;
   private isEditing = false;
 
+  get isActive() {
+    return this.isEditing;
+  }
+
   constructor(controller: ISpreadsheetController, dataModel: DataModel, layout: LayoutState) {
     this.controller = controller;
     this.dataModel = dataModel;
