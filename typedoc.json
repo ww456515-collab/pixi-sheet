@@ -1,0 +1,13 @@
+{
+  "entryPoints": ["./src/index.ts"],
+  "out": "docs",
+  "name": "PixiSheet API Documentation",
+  "readme": "README.md",
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeExternals": true,
+  "theme": "default",
+  "includeVersion": true,
+  "searchInComments": true,
+  "cleanOutputDir": true
+}
