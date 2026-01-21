@@ -29,3 +29,9 @@ dist-ssr
 
 # TypeScript
 *.tsbuildinfo
+
+# Object file
+*.o
+
+# Ada Library Information
+*.ali

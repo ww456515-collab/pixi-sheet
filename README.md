@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # PixiSheet - High Performance Spreadsheet Editor
 
 基于 Pixi.js 开发的高性能 Excel 表格编辑器基础架构。
@@ -52,3 +53,7 @@ src/
 2. **编辑功能**: 集成 DOM Input 元素覆盖在 Canvas 上实现编辑功能。
 3. **样式支持**: 扩展 `CellData` 接口支持背景色、字体样式等。
 4. **公式引擎**: 集成公式解析库。
+=======
+# pixi-sheet
+基于pixi.js开发的excel在线编辑器
+>>>>>>> 3203573c25393e91a0a9e83792bbf0d1d60c66ab
