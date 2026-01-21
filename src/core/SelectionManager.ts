@@ -30,6 +30,19 @@ export class SelectionManager {
     return this.layer;
   }
 
+  /**
+   * 选中指定单元格
+   * @param col 列索引
+   * @param row 行索引
+   */
+  selectCell(col: number, row: number) {
+    const cell = { col, row };
+    this.startCell = cell;
+    this.currentCell = cell;
+    this.updateSelection();
+    this.controller.emit('selection-change', this.selection);
+  }
+
   // Convert screen coordinates to grid coordinates
   private getCellAt(x: number, y: number) {
     // Need to account for scroll position

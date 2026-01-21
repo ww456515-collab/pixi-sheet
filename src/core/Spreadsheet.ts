@@ -180,6 +180,81 @@ export class Spreadsheet extends EventEmitter implements ISpreadsheetController 
       this.showHeaders = options.view.showHeaders ?? true;
       this.showToolbar = options.view.showToolbar ?? false;
     }
+
+    // Keyboard handling
+    window.addEventListener('keydown', this.handleKeyDown.bind(this));
+  }
+
+  private handleKeyDown(e: KeyboardEvent) {
+    if (this.editor.isActive) return;
+    
+    // Ignore if some other input is focused
+    if (document.activeElement instanceof HTMLInputElement || document.activeElement instanceof HTMLTextAreaElement) {
+        return;
+    }
+
+    const selection = this.selectionManager.selection;
+    if (!selection) return;
+
+    // Determine current "active" cell (usually top-left of selection for simple navigation)
+    // If we support moving the "focus" within a selection, it's more complex.
+    // For now, assume single cell navigation or moving the whole selection anchor.
+    // We'll use startCol/startRow as the anchor if we are just moving.
+    
+    // If shift key is pressed, we might want to extend selection (todo)
+    // For this task, we focus on moving the cell selection.
+
+    let { startCol: col, startRow: row } = selection;
+
+    let moved = false;
+    if (e.key === 'ArrowUp') {
+      row = Math.max(0, row - 1);
+      moved = true;
+    } else if (e.key === 'ArrowDown') {
+      row++; // Should probably check max row limit if any
+      moved = true;
+    } else if (e.key === 'ArrowLeft') {
+      col = Math.max(0, col - 1);
+      moved = true;
+    } else if (e.key === 'ArrowRight') {
+      col++; // Check max col limit
+      moved = true;
+    }
+
+    if (moved) {
+      e.preventDefault();
+      this.selectionManager.selectCell(col, row);
+      this.scrollIntoView(col, row);
+    }
+  }
+
+  private scrollIntoView(col: number, row: number) {
+    // Get cell bounds
+    const colX = this.layoutState.getColX(col);
+    const rowY = this.layoutState.getRowY(row);
+    const colWidth = this.layoutState.getColWidth(col);
+    const rowHeight = this.layoutState.getRowHeight(row);
+
+    // Get viewport bounds (visible area)
+    const viewportWidth = this.app.canvas.width / window.devicePixelRatio - this.headerWidth;
+    const viewportHeight = this.app.canvas.height / window.devicePixelRatio - this.headerHeight;
+
+    // Adjust scrollX
+    if (colX < this.scrollX) {
+      this.scrollX = colX;
+    } else if (colX + colWidth > this.scrollX + viewportWidth) {
+      this.scrollX = colX + colWidth - viewportWidth;
+    }
+
+    // Adjust scrollY
+    if (rowY < this.scrollY) {
+      this.scrollY = rowY;
+    } else if (rowY + rowHeight > this.scrollY + viewportHeight) {
+      this.scrollY = rowY + rowHeight - viewportHeight;
+    }
+
+    this.render();
+    this.emit('scroll', { x: this.scrollX, y: this.scrollY });
   }
 
   /**
@@ -254,6 +329,11 @@ export class Spreadsheet extends EventEmitter implements ISpreadsheetController 
 
     // Setup Interaction (Pan)
     this.setupInteraction();
+
+    // Default Selection
+    if (CONFIG.DEFAULT_SELECTION_ENABLED) {
+        this.selectionManager.selectCell(0, 0);
+    }
   }
 
   /**
